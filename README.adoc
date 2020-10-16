@@ -1,0 +1,50 @@
+# Bonita connector read excel
+
+This connector can read excel file.
+
+The first line will be used as input name in output field.
+
+
+
+## Input parameters
+
+
+|===
+|Parameter |Description
+
+|excelDocument | input file with `org.bonitasoft.engine.bpm.document.Document` type
+|===
+
+## Output parameter structure
+
+Result is a `java.util.List`.
+
+```groovy
+[excelData:
+    [
+        [customer: "john", income: 4561.0],
+        [customer: "jack", income: 8652.0]
+    ]
+]
+```
+
+Then use add them to a multiple document process data:
+
+```groovy
+
+excelResult.each { excelLine ->
+    def customer = excelLine.customer
+    def income = excelLine.income
+
+    // add your business logic
+}
+
+```
+
+
+## Build
+To build the connector project, type the following command at the root of the project :
+```
+./mvnw clean install
+```
+The built archive can be found in here `target/[artifact id]-[artifact version].zip` after the build.
