@@ -2,6 +2,7 @@ package com.bonitasoft.connector
 
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
@@ -91,7 +92,17 @@ $result"""
         def value
         switch (cell.getCellType()) {
             case CellType.NUMERIC:
-                value = cell.getNumericCellValue()
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    value = cell.getDateCellValue().toInstant()
+                } else {
+                    value = cell.getNumericCellValue()
+                }
+                break
+            case CellType.BLANK:
+                value = ''
+                break
+            case CellType.BOOLEAN:
+                value = cell.getBooleanCellValue()
                 break
             case CellType.STRING:
                 value = cell.getStringCellValue()
@@ -104,15 +115,16 @@ $result"""
         value
     }
 
-    /**
-     * [Optional] Open a connection to remote server
-     */
+/**
+ * [Optional] Open a connection to remote server
+ */
     @Override
     void connect() throws ConnectorException {}
 
-    /**
-     * [Optional] Close connection to remote server
-     */
+/**
+ * [Optional] Close connection to remote server
+ */
     @Override
     void disconnect() throws ConnectorException {}
+
 }

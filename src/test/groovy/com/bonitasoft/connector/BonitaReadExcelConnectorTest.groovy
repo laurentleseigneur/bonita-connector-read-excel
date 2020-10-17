@@ -2,13 +2,10 @@ package com.bonitasoft.connector
 
 import org.bonitasoft.engine.api.APIAccessor
 import org.bonitasoft.engine.api.ProcessAPI
-import org.bonitasoft.engine.bpm.document.Document
 import org.bonitasoft.engine.bpm.process.impl.DocumentBuilder
 import spock.lang.Specification
 
-import java.nio.file.Files
 import java.time.Instant
-import java.time.LocalDate
 
 class BonitaReadExcelConnectorTest extends Specification {
 
@@ -36,9 +33,21 @@ class BonitaReadExcelConnectorTest extends Specification {
         then:
         result == [
                 excelData: [
-                        [customer: "john", "date of birth": 20534.0, income: 4561.0],
-                        [customer: "jack", "date of birth": 17782.0, income: 8652.0]
+                        [customer: "john", "date of birth": Instant.parse('1956-03-19T23:00:00Z'), income: 4561.0],
+                        [customer: "jack", "date of birth": Instant.parse('1948-09-05T23:00:00Z'), income: 8652.0],
+                        [customer: "helen", "date of birth": Instant.parse('1970-12-05T23:00:00Z'), income: 6587.0]
                 ]
         ]
+    }
+
+    def "should escape"() {
+        given:
+        def aa = "Côtes-d'Arm'or"
+
+        when:
+        def bb = aa.replaceAll("'", "''")
+
+        then:
+        bb == "Côtes-d''Arm''or"
     }
 }
