@@ -5,10 +5,14 @@ import org.bonitasoft.engine.api.ProcessAPI
 import org.bonitasoft.engine.bpm.process.impl.DocumentBuilder
 import spock.lang.Specification
 
+import java.text.DateFormat
+import java.text.FieldPosition
+import java.text.ParsePosition
 import java.time.Instant
 
 class BonitaReadExcelConnectorTest extends Specification {
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd"
     def apiAccessorMock = Mock(APIAccessor)
     def processApiMock = Mock(ProcessAPI)
 
@@ -31,11 +35,12 @@ class BonitaReadExcelConnectorTest extends Specification {
         def result = connector.getOutputParameters()
 
         then:
+
         result == [
                 excelData: [
-                        [customer: "john", "date of birth": Instant.parse('1956-03-19T23:00:00Z'), income: 4561.0],
-                        [customer: "jack", "date of birth": Instant.parse('1948-09-05T23:00:00Z'), income: 8652.0],
-                        [customer: "helen", "date of birth": Instant.parse('1970-12-05T23:00:00Z'), income: 6587.0]
+                        [customer: "john", "date of birth": Date.parse(DATE_FORMAT, '1956-03-20'), income: 4561.0],
+                        [customer: "jack", "date of birth": Date.parse(DATE_FORMAT, '1948-09-06'), income: 8652.0],
+                        [customer: "helen", "date of birth": Date.parse(DATE_FORMAT, '1970-12-06'), income: 6587.0]
                 ]
         ]
     }

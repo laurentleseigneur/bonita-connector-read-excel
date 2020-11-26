@@ -93,7 +93,7 @@ $result"""
         switch (cell.getCellType()) {
             case CellType.NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    value = cell.getDateCellValue().toInstant()
+                    value = cell.getDateCellValue()
                 } else {
                     value = cell.getNumericCellValue()
                 }
