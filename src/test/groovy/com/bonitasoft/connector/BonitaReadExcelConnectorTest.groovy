@@ -5,11 +5,6 @@ import org.bonitasoft.engine.api.ProcessAPI
 import org.bonitasoft.engine.bpm.process.impl.DocumentBuilder
 import spock.lang.Specification
 
-import java.text.DateFormat
-import java.text.FieldPosition
-import java.text.ParsePosition
-import java.time.Instant
-
 class BonitaReadExcelConnectorTest extends Specification {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd"
@@ -43,16 +38,5 @@ class BonitaReadExcelConnectorTest extends Specification {
                         [customer: "helen", "date of birth": Date.parse(DATE_FORMAT, '1970-12-06'), income: 6587.0]
                 ]
         ]
-    }
-
-    def "should escape"() {
-        given:
-        def aa = "Côtes-d'Arm'or"
-
-        when:
-        def bb = aa.replaceAll("'", "''")
-
-        then:
-        bb == "Côtes-d''Arm''or"
     }
 }
