@@ -174,4 +174,9 @@
 
         </plugins>
     </build>
+    <scm>
+        <connection>scm:git:https://github.com/laurentleseigneur/bonita-connector-read-excel.git</connection>
+        <developerConnection>scm:git:https://github.com/laurentleseigneur/bonita-connector-read-excel.git
+        </developerConnection>
+    </scm>
 </project>
