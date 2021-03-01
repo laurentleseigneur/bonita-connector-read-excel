@@ -13,6 +13,18 @@ jobs:
         with:
           ref: master
 
+      - name: Install Java and Maven
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 8
+          server-id: github
+
+      - name: Build and test
+        run: ./mvnw clean verify
+
+      - name: Prepare release
+        run: ./mvnw release:prepare
+
       - uses: qcastel/github-actions-maven-release@master
         with:
           release-branch-name: "master"
@@ -47,6 +59,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
+          server-id: github
 
       #      - name: changelog
       #        uses: scottbrenner/generate-changelog-action@master
