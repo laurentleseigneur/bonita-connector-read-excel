@@ -3,7 +3,7 @@
 
     <groupId>com.bonitasoft.connector</groupId>
     <artifactId>bonita-connector-read-excel</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <name>bonita-connector-read-excel</name>
     <packaging>jar</packaging>
 
@@ -177,6 +177,6 @@
         <connection>scm:git:https://github.com/laurentleseigneur/bonita-connector-read-excel.git</connection>
         <developerConnection>scm:git:https://github.com/laurentleseigneur/bonita-connector-read-excel.git
         </developerConnection>
-      <tag>bonita-connector-read-excel-1.4</tag>
+      <tag>HEAD</tag>
   </scm>
 </project>
