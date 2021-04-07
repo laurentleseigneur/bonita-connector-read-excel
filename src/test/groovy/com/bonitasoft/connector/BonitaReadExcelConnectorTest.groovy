@@ -33,9 +33,9 @@ class BonitaReadExcelConnectorTest extends Specification {
 
         result == [
                 excelData: [
-                        [customer: "john", "date of birth": Date.parse(DATE_FORMAT, '1956-03-20'), income: 4561.0],
-                        [customer: "jack", "date of birth": Date.parse(DATE_FORMAT, '1948-09-06'), income: 8652.0],
-                        [customer: "helen", "date of birth": Date.parse(DATE_FORMAT, '1970-12-06'), income: 6587.0]
+                        [customer: "john", "date of birth": Date.parse(DATE_FORMAT, '1956-03-20'), income: 4561.0, emptyColumn: null],
+                        [customer: "jack", "date of birth": Date.parse(DATE_FORMAT, '1948-09-06'), income: 8652.0, emptyColumn: null],
+                        [customer: "helen", "date of birth": Date.parse(DATE_FORMAT, '1970-12-06'), income: 6587.0, emptyColumn: null]
                 ]
         ]
     }

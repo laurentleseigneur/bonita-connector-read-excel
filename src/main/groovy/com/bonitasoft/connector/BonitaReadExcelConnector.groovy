@@ -1,17 +1,11 @@
 package com.bonitasoft.connector
 
-import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.ss.usermodel.DateUtil
-import org.apache.poi.ss.usermodel.Row
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.ss.usermodel.WorkbookFactory
-import org.bonitasoft.engine.bpm.document.Document
-import org.bonitasoft.engine.connector.AbstractConnector;
-import org.bonitasoft.engine.connector.ConnectorException;
-import org.bonitasoft.engine.connector.ConnectorValidationException;
-
 import groovy.util.logging.Slf4j
+import org.apache.poi.ss.usermodel.*
+import org.bonitasoft.engine.bpm.document.Document
+import org.bonitasoft.engine.connector.AbstractConnector
+import org.bonitasoft.engine.connector.ConnectorException
+import org.bonitasoft.engine.connector.ConnectorValidationException
 
 import java.nio.file.Files
 
@@ -63,25 +57,33 @@ class BonitaReadExcelConnector extends AbstractConnector {
         def columnCount = firstRow.getLastCellNum()
 
         Row row = sheet.getRow(rowIndex++);
-        while (row != null) {
+        def lastRowNum = sheet.getLastRowNum() + 1
+        while (rowIndex <= lastRowNum) {
+            boolean rowHasData = false
             def data = [:]
             for (columnIndex in 0..columnCount) {
-                def cell = row.getCell(columnIndex)
-                if (cell) {
-                    def cellKey = firstRow?.getCell(columnIndex)?.getStringCellValue()
-                    if (cellKey) {
-                        def value
-                        value = getCellValue(cell)
-                        log.info """L${cell.getRow().getRowNum()} C${cell.getColumnIndex()} |  ${cellKey} (${cell.getCellType().name()})| ${value}"""
-                        data.put(cellKey, value)
+                def cell = row?.getCell(columnIndex)
+                def cellKey = firstRow?.getCell(columnIndex)?.getStringCellValue()
+                if (cellKey) {
+                    def value
+                    value = getCellValue(cell)
+                    data.put(cellKey, value)
+                    if (value) {
+                        rowHasData = true
                     }
                 }
             }
-            result.add(data)
+            if (rowHasData) {
+                result.add(data)
+            }
             row = sheet.getRow(rowIndex++);
         }
-        log.info """connector output:
-$result"""
+
+        log.debug 'connector output:'
+        result.each {
+            log.debug "$it"
+
+        }
 
         result
 
@@ -90,26 +92,28 @@ $result"""
 
     def getCellValue(Cell cell) {
         def value
-        switch (cell.getCellType()) {
-            case CellType.NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    value = cell.getDateCellValue()
-                } else {
-                    value = cell.getNumericCellValue()
-                }
-                break
-            case CellType.BLANK:
-                value = ''
-                break
-            case CellType.BOOLEAN:
-                value = cell.getBooleanCellValue()
-                break
-            case CellType.STRING:
-                value = cell.getStringCellValue()
-                break
-            default:
-                log.error("cell  row:${cell.row.getRowNum()} column: ${cell.getColumnIndex()} has not sopported type:${cell.getCellType().name()} not supported. Will return empty content")
-                value = ""
+        if (cell) {
+            switch (cell.getCellType()) {
+                case CellType.NUMERIC:
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        value = cell.getDateCellValue()
+                    } else {
+                        value = cell.getNumericCellValue()
+                    }
+                    break
+                case CellType.BLANK:
+                    value = ''
+                    break
+                case CellType.BOOLEAN:
+                    value = cell.getBooleanCellValue()
+                    break
+                case CellType.STRING:
+                    value = cell.getStringCellValue()
+                    break
+                default:
+                    log.error("cell  row:${cell.row.getRowNum()} column: ${cell.getColumnIndex()} has not sopported type:${cell.getCellType().name()} not supported. Will return empty content")
+                    value = ""
+            }
         }
 
         value
