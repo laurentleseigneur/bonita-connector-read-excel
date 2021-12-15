@@ -13,6 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install Java and Maven
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          server-id: github
+          distribution: 'temurin'
+          cache: 'maven'
+
       - name: Build connector
         run: ./mvnw clean verify
 
@@ -29,7 +37,7 @@ jobs:
           echo "version: ${{ steps.get-version.outputs.version }}"
           echo "final_name: ${{ steps.get-version.outputs.final-name }}"
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.get-version.outputs.final-name }}.zip
-          path: target/${{ steps.get-version.outputs.final-name }}.zip
+      - name: Publish to Github Package
+        run: ./mvnw --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
