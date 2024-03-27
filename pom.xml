@@ -28,7 +28,7 @@
 
         <!-- Test -->
         <spock-core.version>2.3-groovy-3.0</spock-core.version>
-        <logback-classic.version>1.4.14</logback-classic.version>
+        <slf4j.version>1.7.30</slf4j.version>
 
         <!-- Maven plugins -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -53,11 +53,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.apache.commons</groupId>-->
-<!--                <artifactId>commons-compress</artifactId>-->
-<!--                <version>1.26.1</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -71,7 +66,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -100,22 +100,13 @@
             <version>3.0.21</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
             <version>${spock-core.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-classic.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
-
     <build>
         <defaultGoal>package</defaultGoal>
         <sourceDirectory>src/main/groovy</sourceDirectory>
