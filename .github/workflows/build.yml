@@ -65,6 +65,7 @@ jobs:
                 "id": "github",
                   "username": "${{ secrets.MVN_USER }}",
                 "password": "${{ secrets.MVN_TOKEN }}"
+              }
             ]
 
 
