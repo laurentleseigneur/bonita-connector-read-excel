@@ -1,19 +1,21 @@
 package com.bonitasoft.connector
 
-import groovy.util.logging.Slf4j
 import org.apache.poi.ss.usermodel.*
 import org.bonitasoft.engine.bpm.document.Document
 import org.bonitasoft.engine.connector.AbstractConnector
 import org.bonitasoft.engine.connector.ConnectorException
 import org.bonitasoft.engine.connector.ConnectorValidationException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 
-@Slf4j
 class BonitaReadExcelConnector extends AbstractConnector {
 
     def static final EXCEL_DOCUMENT_INPUT = "excelDocument"
     def static final OUTPUT_DATA = "excelData"
+
+    Logger logger = LoggerFactory.getLogger(this.class)
 
     /**
      * Perform validation on the inputs defined on the connector definition (src/main/resources/bonita-connector-read-excel.def)
@@ -42,7 +44,7 @@ class BonitaReadExcelConnector extends AbstractConnector {
     @Override
     void executeBusinessLogic() throws ConnectorException {
         Document defaultInput = getInputParameter(EXCEL_DOCUMENT_INPUT)
-        log.info "$EXCEL_DOCUMENT_INPUT : $defaultInput"
+        logger.info("EXCEL_DOCUMENT_INPUT : {}", defaultInput)
 
 
         def bytes = apiAccessor.getProcessAPI().getDocumentContent(defaultInput.getContentStorageId())
@@ -56,7 +58,7 @@ class BonitaReadExcelConnector extends AbstractConnector {
         def firstRow = sheet.getRow(0)
         def columnCount = firstRow.getLastCellNum()
 
-        Row row = sheet.getRow(rowIndex++);
+        Row row = sheet.getRow(rowIndex++)
         def lastRowNum = sheet.getLastRowNum() + 1
         while (rowIndex <= lastRowNum) {
             boolean rowHasData = false
@@ -76,13 +78,12 @@ class BonitaReadExcelConnector extends AbstractConnector {
             if (rowHasData) {
                 result.add(data)
             }
-            row = sheet.getRow(rowIndex++);
+            row = sheet.getRow(rowIndex++)
         }
 
-        log.debug 'connector output:'
+        logger.debug('connector output:')
         result.each {
-            log.debug "$it"
-
+            logger.debug("{}", it)
         }
 
         result
@@ -115,7 +116,6 @@ class BonitaReadExcelConnector extends AbstractConnector {
                     value = ""
             }
         }
-
         value
     }
 
