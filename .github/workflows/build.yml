@@ -60,7 +60,11 @@ jobs:
                 "id": "bar",
                 "username": "${{ secrets.JFROG_USER }}",
                 "password": "${{ secrets.JFROG_TOKEN }}"
-              }
+              },
+              {
+                "id": "github",
+                  "username": "${{ secrets.MVN_USER }}",
+                "password": "${{ secrets.MVN_TOKEN }}"
             ]
 
 
